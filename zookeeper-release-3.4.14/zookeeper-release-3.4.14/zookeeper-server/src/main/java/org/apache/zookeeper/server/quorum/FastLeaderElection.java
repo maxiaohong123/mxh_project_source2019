@@ -804,7 +804,6 @@ public class FastLeaderElection implements Election {
         try {
             //接收到的票据的集合
             HashMap<Long, Vote> recvset = new HashMap<Long, Vote>();
-
             //
             HashMap<Long, Vote> outofelection = new HashMap<Long, Vote>();
 

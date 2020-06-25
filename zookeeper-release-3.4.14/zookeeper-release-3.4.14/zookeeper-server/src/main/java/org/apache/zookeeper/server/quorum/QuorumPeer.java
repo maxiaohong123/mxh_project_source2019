@@ -796,7 +796,7 @@ public class QuorumPeer extends ZooKeeperThread implements QuorumStats.Provider 
     public Observer observer;
 
     protected Follower makeFollower(FileTxnSnapLog logFactory) throws IOException {
-        return new Follower(this, new FollowerZooKeeperServer(logFactory, 
+        return new Follower(this, new FollowerZooKeeperServer(logFactory,
                 this,new ZooKeeperServer.BasicDataTreeBuilder(), this.zkDb));
     }
      

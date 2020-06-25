@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.jute.Record;
 import org.apache.zookeeper.common.Time;
 import org.apache.zookeeper.data.Id;
+import org.apache.zookeeper.proto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.zookeeper.KeeperException;
@@ -36,23 +37,6 @@ import org.apache.zookeeper.KeeperException.SessionMovedException;
 import org.apache.zookeeper.ZooDefs.OpCode;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
-import org.apache.zookeeper.proto.CreateResponse;
-import org.apache.zookeeper.proto.ExistsRequest;
-import org.apache.zookeeper.proto.ExistsResponse;
-import org.apache.zookeeper.proto.GetACLRequest;
-import org.apache.zookeeper.proto.GetACLResponse;
-import org.apache.zookeeper.proto.GetChildren2Request;
-import org.apache.zookeeper.proto.GetChildren2Response;
-import org.apache.zookeeper.proto.GetChildrenRequest;
-import org.apache.zookeeper.proto.GetChildrenResponse;
-import org.apache.zookeeper.proto.GetDataRequest;
-import org.apache.zookeeper.proto.GetDataResponse;
-import org.apache.zookeeper.proto.ReplyHeader;
-import org.apache.zookeeper.proto.SetACLResponse;
-import org.apache.zookeeper.proto.SetDataResponse;
-import org.apache.zookeeper.proto.SetWatches;
-import org.apache.zookeeper.proto.SyncRequest;
-import org.apache.zookeeper.proto.SyncResponse;
 import org.apache.zookeeper.server.DataTree.ProcessTxnResult;
 import org.apache.zookeeper.server.ZooKeeperServer.ChangeRecord;
 import org.apache.zookeeper.txn.CreateSessionTxn;
@@ -260,6 +244,9 @@ public class FinalRequestProcessor implements RequestProcessor {
                 err = Code.get(rc.err);
                 break;
             }
+           // RequestHeader h = new RequestHeader();
+            // h.setType(ZooDefs.OpCode.exists);
+            // 以上就是客户端发送时的数据
             case OpCode.exists: {
                 lastOp = "EXIS";
                 // TODO we need to figure out the security requirement for this!
@@ -270,6 +257,8 @@ public class FinalRequestProcessor implements RequestProcessor {
                 if (path.indexOf('\0') != -1) {
                     throw new KeeperException.BadArgumentsException();
                 }
+                //stat就是客户端要拿的stat
+                //serverCnxn-->网络处理类
                 Stat stat = zks.getZKDatabase().statNode(path, existsRequest
                         .getWatch() ? cnxn : null);
                 rsp = new ExistsResponse(stat);
